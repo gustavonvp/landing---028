@@ -8,8 +8,10 @@ import {
   mergeMap,
   filter,
   toArray,
-  share
+  share,
+  tap
 } from 'rxjs/operators';
+import { NotificationsService } from '../notifications/notifications.service';
 
 interface OpenWeatherResponse {
   list: {
@@ -26,7 +28,7 @@ interface OpenWeatherResponse {
 export class ForecastService {
   private url = 'https://api.openweathermap.org/data/2.5/forecast';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private notificationService: NotificationsService) {}
 
   getForecast() {
     return this.getCurrentLocation().pipe(
@@ -63,6 +65,10 @@ export class ForecastService {
         },
         err => observer.error(err)
       );
-    });
+    }).pipe(
+      tap(() => {
+        this.notificationService.addSuccess('Got your location')
+      })
+    )
   }
 }
