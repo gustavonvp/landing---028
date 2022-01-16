@@ -13,7 +13,7 @@ export class NotificationListComponent implements OnInit {
   constructor(private notificationService: NotificationsService) { 
     this.messages = notificationService.messagesOutput;
     setInterval(() => {
-      notificationService.addSuccess("Its working!!!");
+      notificationService.addSuccess("Its working!!! -- service notification module");
     }, 2000);
 
   }
